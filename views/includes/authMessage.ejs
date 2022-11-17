@@ -1,0 +1,33 @@
+<% let sweetalert = req.flash('sweetalert') 
+if(sweetalert.length){
+  let data=sweetalert[0]; 
+  let msg = ''; 
+  data.message.forEach(mes => {
+  msg=mes.message+" | " }); 
+  console.log(msg);
+%>
+<script>
+  Swal.fire({
+    title: "<%=data.title %>",
+    text: "<%=msg%>",
+    icon: "<%=data.icon %>",
+    showConfirmButton: "<%=data.button!=null?true:false%>",
+    confirmButtonText: "<%=data.button%>",
+  });
+</script>
+<%}%>
+
+
+<% if(typeof error!='undefined' ){%>
+  <% if(error!='' ){%>
+  
+  <script>
+  Swal.fire({
+    title: "خطا",
+    text: "<%=error%>",
+    icon: "error",
+    showConfirmButton: "تایید",
+
+  });
+</script>
+  <%}} %>

@@ -1,0 +1,177 @@
+
+<div class="row mt-4 ">
+
+    <nav class="col-md-3 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <% categories.forEach(category => {%> 
+            
+     
+          <li class="nav-item">
+            <a class="nav-link active" href="<%=domain%>/filter?category=<%=category.slug  %>">
+
+              <%= category.title  %> 
+            </a>
+          </li>
+          <% }); %> 
+
+        </ul>
+  
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Saved reports</span>
+          <a class="d-flex align-items-center text-muted" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+           استخدام و کاریابی
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              خانه و آشپز خانه
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  
+
+
+    <div class=" mb-2 col-md-9">
+        
+<h2 >صفحه کاربر</h2>
+
+<hr>
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="title" class="control-label font-weight-bold">نام کاربری</label>
+    <p class="" id="title"><%=user.username  %> </p>
+  </div>
+
+  
+  <div class="col">
+    <label for="province" class="control-label font-weight-bold font-weight-bold"
+      >ایمیل</label
+    >
+ <p class=""><%=user.email%> </p>
+</div>
+
+</div>
+
+
+
+
+  
+  <div class="form-group row">
+    <div class="col">
+      <label for="title" class="control-label font-weight-bold">شهر های شما</label>
+      <p class="" id="title">
+    <% user.cities.forEach(city=>{%>
+      <%=city.name  %>/
+      <%}) %>  
+    </p>
+    </div>
+  
+  </div>
+   
+<form class="container form-horizontal" action="/users/update/<%=user._id  %>"  method="post">
+  <div class="form-group row">
+    <div class="col">
+      <label for="province" class="control-label font-weight-bold font-weight-bold"
+        > استان مربوطه</label
+      >
+      <select onchange="cityAjax(this)" name="province" id="province" class="form-control">
+      
+        <%provinces.forEach(province=>{%>
+        <option   value="<%= province._id  %>" <%=typeof oldValue!='undefined'&& oldValue.province==province._id?'selected':'' %>  ><%= province.name  %> </option>
+       <% }) %> 
+      </select>
+  </div>
+  
+  
+      <div class="col">
+        <label for="city" class="control-label font-weight-bold font-weight-bold"
+          > شهر مربوطه</label
+        >
+        <select id="city" class="form-control" name="cities"  multiple>
+            <%cities.forEach(city=>{%>
+
+              <% 
+                  let userCitiesId =[] 
+                     for(let x = 0;x<user.cities.length;x++){
+                      userCitiesId[x]=user.cities[x]._id.toString();
+                      }
+              %> 
+
+                <option   value="<%= city._id  %>" <%= userCitiesId.indexOf(city._id.toString())!=-1?'selected':'' %> ><%= city.name  %> </option>
+               <% }) %> 
+        </select>
+    </div>
+</div>
+    
+    <div class="form-group row">
+        <div class="col">
+          <button type="submit" class="btn btn-success">ارسال</button>
+          <a href="<%=domain  %>/my-divar/posts" class="btn btn-info">وضعیت آگهی های شما</a>
+          <a href="<%=domain  %>/my-divar/favoritePost" class="btn btn-dark">آگهی های نشان شده</a>
+
+          <a href="<%=domain  %>/" class="btn btn-danger">انصراف</a>
+
+        </div>
+      </div>
+ 
+</form>
+
+</div>
+  
+  
+  </div>
+  <script>
+  
+     let user = {};
+    '<%let userCitiesId =[] %>'
+    '<% for(let x = 0;x<user.cities.length;x++){%>'
+        '<%userCitiesId[x]=user.cities[x]._id %>'
+      '<%} %>'
+      user.cities = '<%= userCitiesId.toString() %>'
+    user.cities = user.cities.split(",")
+   
+  </script>
+  <script>
+     
+  function cityAjax(e) {
+    let data = {};
+    data.value = e.value;
+      $.ajax({
+        url: '/ajax-city',
+        type: 'POST',
+        data,
+        success: function(data) {
+        let city = document.getElementById('city');
+        let selectedOptions = $(city).find(":selected")
+        $(city).empty();
+        for(var i=0;i<selectedOptions.length;i++){
+            $(city).append(selectedOptions[i])   
+        }
+      
+        for (var i = 0; i < data.length; i++) {
+           $(city).append(`<option ${user.cities.indexOf(data[i]._id)!=-1?'selected':''}  value=${data[i]._id}> ${data[i].name}</option>`);
+          }
+        }
+      });
+    }
+  </script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="/js/holder.min.js"></script>
+<script>
+    $('.form-control-chosen').chosen({});
+    </script>

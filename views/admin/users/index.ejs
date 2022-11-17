@@ -1,0 +1,64 @@
+<%- include("./../../includes/authMessage.ejs") %>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+></div>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 border-bottom-1"
+>
+  <h2>کاربران ها</h2>
+  <div class="btn-group">
+    <a href="/admin/users/create" class="btn btn-sm btn-primary"
+      >افزودن کاربر جدید</a
+    >
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <% let i = 1+((users.page-1)*users.limit) %> 
+      <tr>
+        <th>ردیف</th>
+        <th>نام کاربری</th>
+        <th>ایمیل</th>
+        <th>تنظیمات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.docs.forEach(user => {%>
+      <tr>
+        <td><%=i%> </td>
+        <% i++ %> 
+        <td><%=user.username %> </a></td>
+        <td><%=user.email %> </a></td>
+
+        <td>
+          <form
+            action="<%=domain%>/admin/users/delete/<%=user._id  %>?_method=DELETE"
+            method="post"
+          >
+            <div class="btn-group btn-group-sm">
+              <% if(user.permisson=="admin"){ %> 
+                <a
+                href="<%=domain%>/admin/users/update/<%=user._id%>"
+                class="btn btn-primary"
+                >لغو مدیریت</a>
+             <% }else{ %>
+                    <a
+                href="<%=domain%>/admin/users/update/<%=user._id%>"
+                class="btn btn-primary"
+                >مدیریت</a>
+            <% } %> 
+        
+              <button type="submit" class="btn btn-danger">حذف</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<%- include("./../../includes/pagination.ejs",{pagination:users})  %> 

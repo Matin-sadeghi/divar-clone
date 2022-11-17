@@ -1,0 +1,134 @@
+
+<%- include("./../../includes/authMessage.ejs")  %> 
+
+
+<div
+class="container mt-3 d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+>
+<h2 >بررسی آگهی</h2>
+</div>
+
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="title" class="control-label font-weight-bold"> عنوان آگهی </label>
+    
+    <p class="form-control" id="title"><%=post.title  %> </p>
+  </div>
+
+
+</div>
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="province" class="control-label font-weight-bold font-weight-bold"
+      > استان مربوطه</label
+    >
+ <p class="form-control"><%=post.province.name  %> </p>
+</div>
+
+
+    <div class="col">
+      <label for="city" class="control-label font-weight-bold font-weight-bold"
+        > شهر مربوطه</label
+      >
+ <p class="form-control"><%=post.city.name  %> </p>
+  
+  </div>
+
+
+
+</div>
+
+<div class="form-group row">
+  <div class="col">
+    <label for="province" class="control-label font-weight-bold font-weight-bold"
+      >آدرس</label
+    >
+ <p class="form-control"><%=post.address  %> </p>
+</div>
+
+
+</div>
+
+
+
+  <div class="form-group row">
+    <div class="col">
+      <label for="category" class="control-label font-weight-bold font-weight-bold"
+        > دسته بندی مربوطه</label
+      >
+ <p class="form-control"><%=post.category.title  %> </p>
+    
+  </div>
+
+ 
+    <div class="col">
+      <label for="subCategory" class="control-label font-weight-bold font-weight-bold"
+        > زیر دسته  مربوطه</label
+      >
+ <p class="form-control"><%=post.subCategory.title  %> </p>
+  
+  </div>
+
+
+  </div>
+
+
+
+  <div class="form-group row">
+    <div class="col">
+      <label for="condition" class="control-label font-weight-bold font-weight-bold"
+        >   وضعیت فروش</label
+      >
+ <p class="form-control"><%=post.conditionForCheck()  %> </p>
+
+
+  </div>
+
+    <div class="col">
+      <% if(post.condition=="sale"){ %> 
+      <label for="price" class="control-label font-weight-bold"> قیمت آگهی </label>
+ <p class="form-control"><%=post.price  %> </p>
+ <% } %> 
+    </div>
+
+
+  </div>
+
+  <label style="display:block;" class="control-label font-weight-bold"> تصاویر </label>
+
+  <div id="imgDiv" class="row col mb-2">
+    
+    <% post.images.forEach(img => { %>
+        <img style="width:200px;height: 200px;" class="mr-2" src="/uploads/postImages/<%=img  %>" alt="">
+   <% });  %> 
+  </div>
+
+  <div class="form-group row">
+    <div  class="col">
+      <label for="body" class="control-label font-weight-bold">متن</label>
+      <div class="form-control">
+      <%-post.body  %>
+    </div>
+    </div>
+  </div>
+
+
+
+<div class="form-group row">
+  <div class="col">
+    <form style="display:inline-block" method="POST" action="/admin/post/check/accept/<%=post._id  %>">
+        <button type="submit" class="btn btn-success">تایید</button>
+    </form>
+    <form style="display:inline-block" method="POST" action="/admin/post/check/rejection/<%=post._id  %>">
+        <button type="submit" class="btn btn-danger">رد</button>
+        <a class="btn btn-info" href="/admin/posts/<%=post.province.slug  %>"> انصراف </a>
+    </form>
+
+
+  </div>
+</div>
+

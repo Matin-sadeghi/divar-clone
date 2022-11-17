@@ -1,0 +1,57 @@
+<%- include("./../../includes/authMessage.ejs") %>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+></div>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 border-bottom-1"
+>
+  <h2>شهر ها</h2>
+  <div class="btn-group">
+    <a href="/admin/cities/create" class="btn btn-sm btn-primary"
+      >افزودن شهر جدید</a
+    >
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <% let i = 1+((cities.page-1)*cities.limit) %> 
+        <th>ردیف</th>
+        <th>نام شهر</th>
+        <th>نام استان</th>
+        <th>تنظیمات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% cities.docs.forEach(city => {%>
+      <tr>
+        <td><%=i  %> </td>
+        <% i++ %> 
+        <td><a href="/cities/آپدیت-جدید-راکت"><%=city.name %> </a></td>
+        <td><%= city.province.name  %> </td>
+
+        <td>
+          <form
+            action="<%=domain%>/admin/cities/delete/<%=city._id  %>?_method=DELETE"
+            method="post"
+          >
+            <div class="btn-group btn-group-sm">
+              <a
+                href="<%=domain%>/admin/cities/edit/<%=city._id%>"
+                class="btn btn-primary"
+                >ویرایش</a
+              >
+              <button type="submit" class="btn btn-danger">حذف</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<%- include("./../../includes/pagination.ejs",{pagination:cities})  %> 

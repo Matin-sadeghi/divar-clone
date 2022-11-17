@@ -1,0 +1,295 @@
+
+<%- include("./../includes/authMessage.ejs")  %> 
+
+
+<div
+class="container mt-3 d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+>
+<h2 >ایجاد آگهی</h2>
+</div>
+<form class="container form-horizontal" action="/add-post"  method="post">
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="title" class="control-label font-weight-bold"> عنوان آگهی </label>
+    
+    <input type="text" class="form-control" name="title" id="title"
+    placeholder=" عنوان آگهی را وارد کنید" value="<%=typeof
+    oldValue!='undefined'?oldValue.title:"" %>">
+  </div>
+
+
+</div>
+
+<div class="form-group row">
+  <div class="col">
+    <label for="address" class="control-label font-weight-bold">  آدرس </label>
+    
+    <input type="text" class="form-control" name="address" id="address"
+    placeholder="  آدرس را وارد کنید" value="<%=typeof
+    oldValue!='undefined'?oldValue.address:"" %>">
+  </div>
+
+
+</div>
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="province" class="control-label font-weight-bold font-weight-bold"
+      > استان مربوطه</label
+    >
+    <select onchange="cityAjax(this)" name="province" id="province" class="form-control">
+    
+      <%provinces.forEach(province=>{%>
+      <option   value="<%= province._id  %>" <%=typeof oldValue!='undefined'&& oldValue.province==province._id?'selected':'' %>  ><%= province.name  %> </option>
+     <% }) %> 
+    </select>
+</div>
+
+
+    <div class="col">
+      <label for="city" class="control-label font-weight-bold font-weight-bold"
+        > شهر مربوطه</label
+      >
+      <select name="city" id="city" class="form-control">
+      
+        <%cities.forEach(ci=>{%>
+          <% if(ci.province==provinces[0]._id.toString()){ %> 
+        <option   value="<%= ci._id  %>" <%=typeof oldValue!='undefined'&& oldValue.city==ci._id?'selected':'' %>  ><%= ci.name  %> </option>
+        <% } %> 
+       <% }) %> 
+      </select>
+  </div>
+
+
+
+</div>
+
+
+
+  <div class="form-group row">
+    <div class="col">
+      <label for="category" class="control-label font-weight-bold font-weight-bold"
+        > دسته بندی مربوطه</label
+      >
+      <select onchange="categoryAjax(this)" name="category" id="category" class="form-control">
+        <%categories.forEach(cate=>{%>
+        <option   value="<%= cate._id  %>" <%=typeof oldValue!='undefined'&& oldValue.category==cate._id?'selected':'' %>  ><%= cate.title  %> </option>
+       <% }) %> 
+      </select>
+  </div>
+
+ 
+    <div class="col">
+      <label for="subCategory" class="control-label font-weight-bold font-weight-bold"
+        > زیر دسته  مربوطه</label
+      >
+      <select name="subCategory" id="subCategory" class="form-control">
+        <%subCategories.forEach(cate=>{%>
+        <option   value="<%= cate._id  %>" <%=typeof oldValue!='undefined'&& oldValue.subCategory==cate._id?'selected':'' %>  ><%= cate.title  %> </option>
+       <% }) %> 
+      </select>
+  </div>
+
+
+  </div>
+
+
+
+  <div class="form-group row">
+    <div class="col">
+      <label for="condition" class="control-label font-weight-bold font-weight-bold"
+        >   وضعیت فروش</label
+      >
+      <select onchange="conditionChange(this)" name="condition" id="condition" class="form-control">
+        <option   value="sale" <%=typeof oldValue!='undefined'&& oldValue.condition=="sale"?'selected':'' %>>فروش</option>
+        <option   value="exchange" <%=typeof oldValue!='undefined'&& oldValue.condition=="exchange"?'selected':'' %>>معاوضه</option>
+        <option   value="agreement" <%=typeof oldValue!='undefined'&& oldValue.condition=="agreement"?'selected':'' %>>توافقی</option>
+      </select>
+  </div>
+
+    <div class="col">
+      <label for="price" id="labelPrice" class="control-label font-weight-bold"> قیمت آگهی </label>
+      <input type="text" class="form-control" name="price" id="price"
+      placeholder=" قیمت آگهی را وارد کنید" value="<%=typeof
+      oldValue!='undefined'?oldValue.price:"" %>">
+    </div>
+ 
+
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <button
+        class="btn btn-sm btn-outline-secondary"
+        type="button"
+        id="imageUpload"
+        onclick="AjaxSendImage()"
+      >
+        آپلود عکس
+      </button>
+    </div>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="selectedImage" />
+      <label id="imageStatus" class="custom-file-label" for="selectedImage">
+        عکس مورد نظر را انتخاب کنید
+      </label>
+    </div>
+  </div>
+  <div style="text-align:center;" id="imgDiv" class="row col mb-2">
+  </div>
+  <select class="imgOption" style="display:none;" multiple name="images" id="images"></select>
+  <div class="form-group row">
+    <div class="col">
+      <label for="body" class="control-label font-weight-bold">متن</label>
+      <textarea
+        rows="10"
+        class="form-control"
+        name="body"
+        id="body"
+        placeholder="متن آگهی را وارد کنید"
+      >
+<%=typeof oldValue!='undefined'?oldValue.body:""%></textarea
+      >
+    </div>
+  </div>
+
+
+
+<div class="form-group row">
+  <div class="col">
+    <button type="submit" class="btn btn-success">ارسال</button>
+    <a href="<%=domain  %>/admin/cities" class="btn btn-danger">انصراف</a>
+  </div>
+</div>
+</form>
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+ function conditionChange(e){
+
+  if(e.value!="sale"){
+    document.getElementById("price").style.display="none"
+    document.getElementById("labelPrice").style.display="none";
+    document.getElementById("price").value=e.value;
+  }else{
+    document.getElementById("price").style.display="block"
+    document.getElementById("labelPrice").style.display="block";
+
+    document.getElementById("price").value=""
+  }
+}
+</script>
+<script>
+ CKEDITOR.replace("body",{language: "fa",})
+ function AjaxSendImage(){
+
+
+  let selectedImage= document.getElementById("selectedImage");
+  let imageStatus = document.getElementById("imageStatus")  
+  
+  let formData  = new FormData()
+  if (selectedImage.files.length > 0) {
+  formData.append("image",selectedImage.files[0]);
+  } else {
+    imageStatus.innerHTML = "ابتدا عکس خود را انتخاب کنید";
+  }
+if(selectedImage.files.length > 0){
+  $.ajax({
+    url: "/ajax-imgUplod",
+    type: "POST",
+    processData: false,
+    contentType: false,
+    cache: false,
+    data:formData ,
+    success: function (msg) {
+  let imgDiv = document.getElementById('imgDiv');
+  let images = document.getElementById("images");
+
+  $(imgDiv).append('<div><img class="mr-2" style="width:70px;height:70px;display:block;"  src='+msg.address +' ><button type="button" onclick="removeImg(this)" class="btn btn-sm btn-outline-danger mt-2">حذف</button></div>');
+  $(images).append('<option  selected value='+msg.fileName+'>'+msg.fileName+'</option>')
+    Swal.fire({
+    title: "موفقیت آمیز بود",
+    text: "عکس شما با موفقیت آپلود شد",
+    icon: "success",
+    showConfirmButton: true,
+    confirmButtonText: "تایید",
+  });
+ 
+
+  },
+  error:function(msg){
+    Swal.fire({
+    title: "خطا !",
+    html: `عکس شما آپلود نشد
+    <br>
+    ${msg.responseJSON.error}
+    `,
+    icon: "error",
+    showConfirmButton: true,
+    confirmButtonText: "تایید",
+  });
+    
+  }
+ })
+}
+
+}
+
+function removeImg(e){
+
+  let divElement= e.parentElement;
+  let src = $(divElement).children("img").eq(0).attr('src').split("/")[5];
+  
+
+  let data = {};
+    data.value = src;
+      $.ajax({
+        url: '/delete-img',
+        type: 'POST',
+        data,
+        success: function(data) {
+         
+        }
+      });
+
+  $(`.imgOption option[value="${src}"]`).eq(0).remove()
+  e.parentElement.remove();
+}
+
+  function cityAjax(e) {
+    let data = {};
+    data.value = e.value;
+      $.ajax({
+        url: '/ajax-city',
+        type: 'POST',
+        data,
+        success: function(data) {
+        let city = document.getElementById('city');
+        $(city).empty();
+        for (var i = 0; i < data.length; i++) {
+           $(city).append('<option ' +  'value=' + data[i]._id + '>' + data[i].name + '</option>');
+        }
+        }
+      });
+    }
+
+
+    function categoryAjax(e) {
+    let data = {};
+    data.value = e.value;
+      $.ajax({
+        url: '/ajax-category',
+        type: 'POST',
+        data,
+        success: function(data) {
+        let subCategory = document.getElementById('subCategory');
+        $(subCategory).empty();
+        for (var i = 0; i < data.length; i++) {
+           $(subCategory).append('<option ' +  'value=' + data[i]._id + '>' + data[i].title + '</option>');
+        }
+        }
+      });
+    }
+</script>

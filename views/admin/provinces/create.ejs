@@ -1,0 +1,42 @@
+<%- include("./../../includes/authMessage.ejs")  %> 
+
+
+<div
+class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+>
+<h2>ایجاد استان جدید</h2>
+</div>
+<form class="form-horizontal" action="/admin/provinces/create"  method="post">
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="name" class="control-label font-weight-bold">نام استان</label>
+    
+    <input type="text" class="form-control" name="name" id="name"
+    placeholder="نام استان  را وارد کنید" value="<%=typeof
+    oldValue!='undefined'?oldValue.name:"" %>">
+  </div>
+</div>
+
+<div class="form-group row">
+  <div class="col">
+    <label for="slug" class="control-label font-weight-bold">اسلاگ استان</label>
+  
+    <input type="text" class="form-control" name="slug" id="slug"
+    placeholder="اسلاگ استان را وارد کنید" value="<%=typeof
+    oldValue!='undefined'?oldValue.slug:"" %>">
+  </div>
+</div>
+
+  
+
+<div class="form-group row">
+  <div class="col">
+    <button type="submit" class="btn btn-success">ارسال</button>
+    <a href="<%domain  %>/admin/provinces" class="btn btn-danger">انصراف</a>
+
+  </div>
+</div>
+</form>
+

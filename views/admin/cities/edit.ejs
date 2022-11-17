@@ -1,0 +1,56 @@
+<%- include("./../../includes/authMessage.ejs")  %> 
+
+<div
+class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+>
+<h2>ویرایش شهر</h2>
+</div>
+<form class="form-horizontal" action="/admin/cities/update/<%=city._id  %>?_method=put"  method="post">
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="name" class="control-label font-weight-bold">نام شهر</label>
+  
+    <input type="text" class="form-control" name="name" id="name"
+    placeholder="نام شهر را وارد کنید" value="<%=typeof oldValue!='undefined'?oldValue.name:city.name %>">
+  </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col">
+      <label for="slug" class="control-label font-weight-bold">اسلاگ شهر</label>
+    
+      <input type="text" class="form-control" name="slug" id="slug"
+      placeholder="اسلاگ شهر را وارد کنید" value="<%=typeof oldValue!='undefined'?oldValue.slug:city.slug %>">
+    </div>
+  </div>
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="province" class="control-label font-weight-bold font-weight-bold"
+      >استان مربوطه</label
+    >
+    <select name="province" id="province" class="form-control">
+    
+        <%provinces.forEach(prov=>{%>
+        <option   value="<%= prov._id  %>" <%=typeof oldValue=='undefined'&& city.province.toString()==prov.id?'selected':'' %>  <%=typeof oldValue!='undefined'&& oldValue.province==prov.id?'selected':'' %> ><%= prov.name  %></option>
+       <% }) %> 
+      </select>
+      
+    </select>
+</div>
+</div>
+
+ 
+<div class="form-group row">
+  <div class="col">
+    <button type="submit" class="btn btn-success">ارسال</button>
+    <a href="<%=domain  %>/admin/cities" class="btn btn-danger">انصراف</a>
+
+  </div>
+</div>
+</form>
+

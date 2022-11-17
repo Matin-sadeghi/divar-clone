@@ -1,0 +1,56 @@
+<%- include("./../../includes/authMessage.ejs")  %> 
+
+<div
+class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+>
+<h2>ویرایش دسته بندی</h2>
+</div>
+<form class="form-horizontal" action="/admin/categories/update/<%=category._id  %>?_method=put"  method="post">
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="title" class="control-label font-weight-bold">عنوان دسته بندی</label>
+  
+    <input type="text" class="form-control" name="title" id="title"
+    placeholder="عنوان دسته بندی را وارد کنید" value="<%=typeof oldValue!='undefined'?oldValue.title:category.title %>">
+  </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col">
+      <label for="slug" class="control-label font-weight-bold">اسلاگ دسته بندی</label>
+    
+      <input type="text" class="form-control" name="slug" id="slug"
+      placeholder="اسلاگ دسته بندی را وارد کنید" value="<%=typeof oldValue!='undefined'?oldValue.slug:category.slug %>">
+    </div>
+  </div>
+
+
+<div class="form-group row">
+  <div class="col">
+    <label for="parent" class="control-label font-weight-bold font-weight-bold"
+      >دسته بندی مربوطه</label
+    >
+    <select name="parent" id="parent" class="form-control">
+      <option value="none">دسته اصلی</option>
+        <%categories.forEach(cate=>{%>
+        <option   value="<%= cate._id  %>" <%=typeof oldValue=='undefined'&& category.parent==cate.id?'selected':'' %>  <%=typeof oldValue!='undefined'&& oldValue.parent==cate.id?'selected':'' %> ><%= cate.title  %></option>
+       <% }) %> 
+      </select>
+      
+    </select>
+</div>
+</div>
+
+ 
+<div class="form-group row">
+  <div class="col">
+    <button type="submit" class="btn btn-success">ارسال</button>
+    <a href="<%=domain  %>/admin/categories" class="btn btn-danger">انصراف</a>
+
+  </div>
+</div>
+</form>
+

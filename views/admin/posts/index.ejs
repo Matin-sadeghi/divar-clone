@@ -1,0 +1,56 @@
+<%- include("./../../includes/authMessage.ejs") %>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+></div>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 border-bottom-1"
+>
+  <h2>پست ها</h2>
+ 
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <% let i = 1+((provinces.page-1)*provinces.limit) %> 
+        <th>ردیف</th>
+        <th>اطلاعات</th>
+        <th>نام استان</th>
+        <th>نمایش</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% provinces.docs.forEach(province => {%>
+      <tr>
+        <td><%=i  %> </td>
+        <% i++ %> 
+        <td style="text-align: center;">
+          
+            <span class="badge badge-pill badge-warning">دیده نشده  <%= province.information().unseen  %>   </span>
+            <span class="badge badge-pill badge-primary">دیده شده  <%= province.information().seen  %>   </span>
+            
+            <span class="badge badge-pill badge-success">تایید شده  <%= province.information().accept  %>   </span>
+            <span class="badge badge-pill badge-danger">رد شده  <%= province.information().rejection  %>   </span>
+        </div>
+        </td>
+       
+        <td><%= province.name  %> </td>
+
+        <td>
+        
+            <div class="btn-group btn-group-sm">
+                <a href="<%=domain  %>/admin/posts/<%=province.slug  %>" style="color:white;" role="button" class="btn btn-primary">
+                    بررسی استان<span class="mr-2 badge badge-light">دیده نشده  <%= province.information().unseen  %>   </span>
+                </a>
+            </div>
+        
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<%- include("./../../includes/pagination.ejs",{pagination:provinces})  %> 

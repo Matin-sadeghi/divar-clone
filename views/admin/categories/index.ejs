@@ -1,0 +1,57 @@
+<%- include("./../../includes/authMessage.ejs") %>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom"
+></div>
+
+<div
+  class="d-flex justify-content-between align-items-center mb-3 border-bottom-1"
+>
+  <h2>دسته بندی ها</h2>
+  <div class="btn-group">
+    <a href="/admin/categories/create" class="btn btn-sm btn-primary"
+      >افزودن دسته بندی جدید</a
+    >
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <% let i = 1+((categories.page-1)*categories.limit) %> 
+        <th>ردیف</th>
+        <th>عنوان دسته بندی</th>
+        <th>زیر دسته</th>
+        <th>تنظیمات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.docs.forEach(cate => {%>
+      <tr>
+        <td><%=i  %> </td>
+        <% i++ %> 
+        <td><a href="/categories/آپدیت-جدید-راکت"><%=cate.title %> </a></td>
+        <td><%= cate.parent==null?'دسته اصلی':cate.parent.title %></td>
+
+        <td>
+          <form
+            action="<%=domain%>/admin/categories/delete/<%=cate._id  %>?_method=DELETE"
+            method="post"
+          >
+            <div class="btn-group btn-group-sm">
+              <a
+                href="<%=domain%>/admin/categories/edit/<%=cate._id%>"
+                class="btn btn-primary"
+                >ویرایش</a
+              >
+              <button type="submit" class="btn btn-danger">حذف</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<%- include("./../../includes/pagination.ejs",{pagination:categories})  %> 
